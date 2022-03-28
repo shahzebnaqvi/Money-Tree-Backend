@@ -16,7 +16,9 @@ class User extends Dbconfig {
             $this->userName = $database->userName;
             $this->password = $database->password;
 			$this->dbName = $database->dbName;			
-            $conn = new mysqli($this->hostName, $this->userName, $this->password, $this->dbName);
+            // $conn = new mysqli($this->hostName, $this->userName, $this->password, $this->dbName);
+            $conn = new mysqli('localhost', 'root', '', 'moneytree');
+
             if($conn->connect_error){
                 die("Error failed to connect to MySQL: " .$conn->connect_error);
             } else{

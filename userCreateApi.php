@@ -11,13 +11,13 @@ $phone = $data['phone'];
 $token = bin2hex(random_bytes(15));
 include('include/User.php');
 $user = new User();
-$sql1 = "SELECT id FROM `users` WHERE email = '{$email}' and `status` = 'Verified' ";
+$sql1 = "SELECT id FROM `users` WHERE email = '{$email}'  ";
 $result1 = mysqli_query($user->dbConnect,$sql1);
 if(mysqli_num_rows($result1)==0){
-    $sql2 = "SELECT id FROM `users` WHERE phone = '${phone}' and `status` = 'Verified' ";
+    $sql2 = "SELECT id FROM `users` WHERE  phone_number = '${phone}' ";
     $result2 = mysqli_query($user->dbConnect,$sql2);
     if(mysqli_num_rows($result2)==0){
-        $sql3 = "INSERT INTO `users`(`name`, `email`, `phone`, `token`) VALUES ('{$name}','{$email}','{$phone}','{$token}')";
+        $sql3 = "INSERT INTO `users`(`name`, `email`, `phone_number`, `token`) VALUES ('{$name}','{$email}','{$phone}','{$token}')";
         $result3 = mysqli_query($user->dbConnect,$sql3);
         $response = array("condition"=>true,"message"=>"Successfully register!");
     }else{
