@@ -9,7 +9,8 @@ $name = $data['name'];
 $email = $data['email'];
 $phone = $data['phone'];
 $token = bin2hex(random_bytes(15));
-$referal = $name.substr($phone, -5, 5).substr($token,  -4, 4);
+$newref = substr(strtoupper($name), 0, 5).rand(10,100).substr($phone, -4, 4);
+$referal = str_ireplace (' ', '', $newref);
 include('include/User.php');
 $user = new User();
 
