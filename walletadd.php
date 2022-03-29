@@ -19,7 +19,7 @@ if(isset($data['userid']) and isset($data['email']) and isset($data['amount'])an
 
 
 
-    $sql1 = "SELECT id FROM `users` WHERE email = '{$email}'  ";
+    $sql1 = "SELECT id FROM `users` WHERE email = '{$email}'";
 
     $result1 = mysqli_query($user->dbConnect,$sql1);
     if(mysqli_num_rows($result1)){
@@ -29,7 +29,7 @@ if(isset($data['userid']) and isset($data['email']) and isset($data['amount'])an
 
     }
     else{
-            $response = array("condition"=>false,"message"=>"This email is already registered!");
+            $response = array("condition"=>false,"message"=>"User Not Found");
 
     }
 
