@@ -14,23 +14,25 @@ if(isset($data['userid']) and isset($data['email']) and isset($data['amount'])an
     $sql1 = "SELECT id FROM `users` WHERE email = '{$email}'";
     $result1 = mysqli_query($user->dbConnect,$sql1);
     if(mysqli_num_rows($result1)){
-        $sql2 = "SELECT SUM(`amount`) as 'total' FROM `wallet` WHERE `user_id`='{$userid}' AND `tranaction_type`='add' AND `status`='Approved'";
+        $sql2 = "SELECT SUM(`amount`) as 'total' FROM `plan_user` WHERE `user_id`='{$userid}' AND  `type`='purchase' AND `plan_id`='{$plan_id}'";
+        $response = array("condition"=>false,"message"=>"User Not Found '{$sql2}'");
+
         $result2 = mysqli_query($user->dbConnect,$sql2);
         $re =mysqli_fetch_assoc($result2);
-        $add = $re['total'];
-        $sql4 = "SELECT SUM(`amount`) as 'total' FROM `wallet` WHERE `user_id`='{$userid}' AND `tranaction_type`='subtract' AND `status`='Approved'";
+        $purchase = $re['total'];
+        $sql4 = "SELECT SUM(`amount`) as 'total' FROM `plan_user` WHERE `user_id`='{$userid}' AND  `type`='sell' AND `plan_id`='{$plan_id}'";
         $result4 = mysqli_query($user->dbConnect,$sql4);
         $re4 =mysqli_fetch_assoc($result4);
-        $subtract = $re4['total'];
-        $cur_wal = $add -$subtract;
-        if($cur_wal>=$amount){
-            $sql3 = "INSERT INTO `plan_user`(`user_id`, `plan_id`,`amount`,`type`) VALUES ('{$userid}','{$plan_id}','{$amount}' , 'purchase')";
+        $sell = $re4['total'];
+        $pal_ammount = $purchase -$sell;
+        if($pal_ammount>=$amount){
+            $sql3 = "INSERT INTO `plan_user`(`user_id`, `plan_id`,`amount`,`type`) VALUES ('{$userid}','{$plan_id}','{$amount}' , 'sell')";
             $result3 = mysqli_query($user->dbConnect,$sql3);   
             $sql5 = "INSERT INTO `wallet`( `user_id`, `tranaction_type`, `amount`, `status`) VALUES ('{$userid}','subtract','{$amount}' , 'Approved')";
             $result5 = mysqli_query($user->dbConnect,$sql5);
-            $response = array("condition"=>true,"message"=>"Successfully Purchase!");
+            $response = array("condition"=>true,"message"=>"Successfully sell!");
         }
-        else{$response = array("condition"=>false,"message"=>"Wallet Amount is less");}
+        else{$response = array("condition"=>false,"message"=>"Don't have plan");}
     }
     else{
       $response = array("condition"=>false,"message"=>"User Not Found");
