@@ -19,13 +19,32 @@ if(isset($data['userid']) and isset($data['email']) and isset($data['amount'])an
     $result1 = mysqli_query($user->dbConnect,$sql1);
     if(mysqli_num_rows($result1)){
 
-        $sql3 = "INSERT INTO `plan_user`(`user_id`, `plan_id`,`amount`,`type`) VALUES ('{$userid}','{$plan_id}','{$amount}' , 'purchase')";
-        $result3 = mysqli_query($user->dbConnect,$sql3);
-        $response = array("condition"=>true,"message"=>"Successfully register!");
+
+        $sql2 = "SELECT SUM(`amount`) as 'total' FROM `wallet` WHERE `user_id`='{$userid}' AND `tranaction_type`='add' AND `status`='Approved'";
+        $result2 = mysqli_query($user->dbConnect,$sql2);
+        $re =mysqli_fetch_assoc($result2);
+        $add = $re['total'];
+
+
+        $sql4 = "SELECT SUM(`amount`) as 'total' FROM `wallet` WHERE `user_id`='{$userid}' AND `tranaction_type`='subtract' AND `status`='Approved'";
+        $result4 = mysqli_query($user->dbConnect,$sql4);
+        $re4 =mysqli_fetch_assoc($result4);
+        $subtract = $re4['total'];
+
+        $cur_wal = $add -$subtract;
+        if($cur_wal>=$amount){
+
+            $sql3 = "INSERT INTO `plan_user`(`user_id`, `plan_id`,`amount`,`type`) VALUES ('{$userid}','{$plan_id}','{$amount}' , 'purchase')";
+            $result3 = mysqli_query($user->dbConnect,$sql3);   
+            $sql5 = "INSERT INTO `wallet`( `user_id`, `tranaction_type`, `amount`, `status`) VALUES ('{$userid}','subtract','{$amount}' , 'Approved')";
+            $result5 = mysqli_query($user->dbConnect,$sql5);
+            $response = array("condition"=>true,"message"=>"Successfully register! '{$cur_wal}' kk ");
+        }
+        else{$response = array("condition"=>false,"message"=>"Wallet Amount is less");}
     }
     else{
-          $response = array("condition"=>false,"message"=>"User Not Found");
-    }
+      $response = array("condition"=>false,"message"=>"User Not Found");
+  }
 }
 else{
     $response = array("condition"=>false,"message"=>"Data Contain Null Value Note Pass { 'userid' : '3', 'email' : 'a@gmail.com', 'amount':'33' ,'plan_id':'id'}   formate");
