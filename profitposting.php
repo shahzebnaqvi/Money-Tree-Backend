@@ -17,9 +17,9 @@ $yearly = [];
 $j=0;
 $k=0;
 for($i=0;$i<sizeof($row);$i++){
-    $items[$k]['plan_id'] =   $row[$i]['plan_id'];
-    $items[$k]['date'] =   $row[$i]['date'];
-    $items[$k]['id'] = $row[$i]['id'];
+	    $items[$k]['date'] =   $row[$i]['date'];
+
+    $items[$k]['profit_percent'] =   $row[$i]['profit_percent'];
     $k++;
     if(!in_array($row[$i]['profit_percent'],$checkRepeat)){
         $response[$j]['profit_percent'] = $row[$i]['profit_percent'];
@@ -27,13 +27,16 @@ for($i=0;$i<sizeof($row);$i++){
         array_push($checkRepeat,$row[$i]['profit_percent']);
         $j++;
     }elseif( !isset($row[$i+1]['profit_percent']) || $row[$i]['profit_percent']!=$row[$i+1]['profit_percent']){
-        $response[$j-1]['monthly'] = $items;
-        $items = [];
-        $k=0;
+       
     }else{
         continue;
     }
-}
+} $response[$j-1]['monthly'] = $items;
+        $items = [];
+        $k=0;
+  $response[$j-1]['yearly'] = $items;
+  $items = [];
+  $k=0;
 // echo "<pre>";
 // print_r($response);
 echo json_encode($response);
