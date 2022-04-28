@@ -28,7 +28,7 @@ if(isset($data['userid']) and isset($data['email']) and isset($data['amount'])an
         if($pal_ammount>=$amount){
             $sql3 = "INSERT INTO `plan_user`(`user_id`, `plan_id`,`amount`,`type`) VALUES ('{$userid}','{$plan_id}','{$amount}' , 'sell')";
             $result3 = mysqli_query($user->dbConnect,$sql3);   
-            $sql5 = "INSERT INTO `wallet`( `user_id`, `tranaction_type`, `amount`, `status`) VALUES ('{$userid}','subtract','{$amount}' , 'Approved')";
+            $sql5 = "INSERT INTO `wallet`( `user_id`, `tranaction_type`, `amount`, `status`) VALUES ('{$userid}','add','{$amount}' , 'Approved')";
             $result5 = mysqli_query($user->dbConnect,$sql5);
             $response = array("condition"=>true,"message"=>"Successfully sell!");
         }
