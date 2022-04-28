@@ -21,8 +21,8 @@ if(isset($_POST['userid']) and isset($_POST['amount']) and isset($_FILES['sendim
 	}
 	else
 	{
-		
-	$upload_path = 'upload/'; // set upload folder path 
+		$randomnum = rand();
+	$upload_path = 'upload/'.$randomnum; // set upload folder path 
 	
 	$fileExt = strtolower(pathinfo($fileName,PATHINFO_EXTENSION)); // get image extension
 
@@ -58,7 +58,7 @@ if(isset($_POST['userid']) and isset($_POST['amount']) and isset($_FILES['sendim
 }
 
 if(!isset($errorMSG))
-	{$sql2 = 'INSERT INTO `wallet`(`user_id`, `tranaction_type`, `amount`, `image`)  VALUES("'.$userid.'","'."credit".'","'.$amount.'","'.$fileName.'")';
+	{$sql2 = 'INSERT INTO `wallet`(`user_id`, `tranaction_type`, `amount`, `image`)  VALUES("'.$userid.'","'."credit".'","'.$amount.'","'.$randomnum.$fileName.'")';
 		$query = mysqli_query($user->dbConnect,$sql2);
 
 		echo json_encode(array("message" => "Image Uploaded Successfully {$sql2}", "status" => true));	
