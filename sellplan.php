@@ -8,7 +8,7 @@ if(isset($data['userid']) and isset($data['email']) and isset($data['amount'])an
     $userid = $data['userid'];
     $email = $data['email'];
     $amount = $data['amount'];
-    $plan_id = $data['plan_id'];
+    $plan_id = $data['plan_id']+1;
     include('include/User.php');
     $user = new User();
     $sql1 = "SELECT id FROM `users` WHERE email = '{$email}'";
