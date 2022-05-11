@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 08, 2022 at 09:21 PM
+-- Generation Time: May 11, 2022 at 06:27 PM
 -- Server version: 5.7.37-cll-lve
 -- PHP Version: 7.4.29
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `zainrajp_money-tree-user`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bank_accounts`
+--
+
+CREATE TABLE `bank_accounts` (
+  `id` int(11) NOT NULL,
+  `acc_ttitle` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `acc_no` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `acc_iban` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -68,6 +81,29 @@ INSERT INTO `faqs` (`id`, `question`, `answer`, `time`) VALUES
 (2, 'What is your best pets animals?', 'Cow', '2022-04-04 10:11:29'),
 (3, 'What is your First name?', 'Muhammad', '2022-04-04 10:12:22'),
 (4, 'What is your last name?', 'Yousuf', '2022-04-04 10:12:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kyc_approval`
+--
+
+CREATE TABLE `kyc_approval` (
+  `id` int(11) NOT NULL,
+  `applied_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `user_id` int(11) NOT NULL,
+  `cnic` int(11) NOT NULL,
+  `utility_bill` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `status` enum('Unapproved','Approved','Reject','') COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `kyc_approval`
+--
+
+INSERT INTO `kyc_approval` (`id`, `applied_date`, `user_id`, `cnic`, `utility_bill`, `status`) VALUES
+(7, '2022-05-10 19:09:30', 1, 0, '769129273image_picker1263082621.jpg', 'Unapproved'),
+(8, '2022-05-10 19:11:37', 2, 232233233, '1136822100w.png', 'Unapproved');
 
 -- --------------------------------------------------------
 
@@ -213,18 +249,15 @@ CREATE TABLE `plan_user` (
 --
 
 INSERT INTO `plan_user` (`id`, `user_id`, `plan_id`, `type`, `status`, `amount`, `create_date`) VALUES
-(1, 1, 1, 'purchase', 0, 16, '2022-04-28 21:01:30'),
-(2, 1, 2, 'purchase', 0, 1, '2022-04-28 21:01:30'),
-(3, 1, 0, 'purchase', 0, 1, '2022-04-28 21:01:30'),
-(4, 1, 1, 'purchase', 0, 2, '2022-04-28 21:01:30'),
-(5, 1, 0, 'purchase', 0, 22, '2022-04-28 21:01:30'),
-(6, 1, 1, 'purchase', 0, 22, '2022-04-28 21:01:30'),
-(7, 1, 2, 'purchase', 0, 22, '2022-04-28 21:01:30'),
-(8, 1, 1, 'purchase', 0, 20, '2022-04-28 21:01:30'),
-(9, 1, 0, 'sell', 0, 22, '2022-04-28 21:01:30'),
-(10, 1, 1, 'sell', 0, 22, '2022-04-28 21:01:30'),
-(11, 5, 2, 'purchase', 0, 10000, '2022-04-29 10:16:47'),
-(12, 5, 2, 'sell', 0, 5000, '2022-04-29 10:17:08');
+(4, 1, 1, 'purchase', 0, 500, '2022-05-10 18:22:27'),
+(5, 1, 1, 'sell', 0, 400, '2022-05-10 18:22:55'),
+(6, 1, 1, 'sell', 0, 50, '2022-05-10 18:26:54'),
+(7, 1, 2, 'purchase', 0, 500, '2022-05-10 18:27:40'),
+(8, 1, 2, 'sell', 0, 300, '2022-05-10 18:27:57'),
+(9, 1, 3, 'purchase', 0, 250, '2022-05-10 18:28:26'),
+(10, 1, 3, 'sell', 0, 150, '2022-05-10 18:28:37'),
+(11, 1, 4, 'purchase', 0, 650, '2022-05-10 18:29:08'),
+(12, 1, 4, 'sell', 0, 150, '2022-05-10 18:29:18');
 
 -- --------------------------------------------------------
 
@@ -244,6 +277,31 @@ CREATE TABLE `profit` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `referral`
+--
+
+CREATE TABLE `referral` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `reffered_by` int(11) NOT NULL,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `referral`
+--
+
+INSERT INTO `referral` (`id`, `user_id`, `reffered_by`, `time`) VALUES
+(3, 1, 1, '2022-05-11 17:58:25'),
+(4, 0, 0, '2022-05-11 18:09:43'),
+(5, 0, 0, '2022-05-11 18:16:22'),
+(6, 0, 0, '2022-05-11 18:16:55'),
+(7, 0, 0, '2022-05-11 18:18:16'),
+(8, 0, 0, '2022-05-11 18:19:34');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -253,6 +311,7 @@ CREATE TABLE `users` (
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `phone_number` varchar(50) DEFAULT NULL,
+  `password` varchar(500) DEFAULT NULL,
   `token` varchar(250) NOT NULL,
   `referal_id` varchar(100) NOT NULL,
   `profile_image` varchar(250) NOT NULL,
@@ -267,18 +326,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `create_time`, `name`, `email`, `phone_number`, `token`, `referal_id`, `profile_image`, `login_info`, `social_id`, `bankname`, `accounttitle`, `iban`) VALUES
-(1, '2022-05-08 20:44:12', 'assa', 'shahzeb.quantex@gmail.com', 'assa', '5246a34aeb7c80bd019c7c522b7f7f', 'SHAHZ78', 'null', '2022-05-08 20:44:12', '114185325380483965475', 'assa', 'assa', 'assa'),
-(2, '2022-04-28 20:02:40', 'Ather Naqvi', 'athernaqvi401@gmail.com', NULL, '40955cdda4ddd5b63ffe6dddcf0a6e', 'ATHER70', 'null', '2022-04-28 20:02:40', '113098925623963443629', NULL, NULL, NULL),
-(3, '2022-04-28 23:23:19', '+92222', '', '', 'f8fad5836d15a5d8cf1261bfbfab2a', '+922265', '', '2022-04-28 23:23:19', NULL, NULL, NULL, NULL),
-(4, '2022-04-28 23:23:45', '+922222222222', 'J', 'U', '5e839cd05843810e55d1a81a701c00', '+922223U', '', '2022-04-28 23:23:45', NULL, NULL, NULL, NULL),
-(5, '2022-04-29 06:20:29', 'Muhammad Yousuf', 'muhammad.yousuf786678@gmail.com', NULL, '2a622a9f8f01454f10601d61967dc7', 'MUHAM93', 'https://lh3.googleusercontent.com/a-/AOh14Gg5WSVHXNszn6IcAl-I8pB1ZOUGREpcC0qEtNzL', '2022-04-29 06:20:29', '116702045659236458430', NULL, NULL, NULL),
-(6, '2022-04-29 11:50:43', '+92', 'Yh', 'Hj', '12a9ac1f8c171ad7c751f45fe7def7', '+9288Hj', '', '2022-04-29 11:50:43', NULL, NULL, NULL, NULL),
-(7, '2022-04-29 11:53:54', 'noman mushtaq', 'nomanyar@googlemail.com', NULL, '6219ce40549541ed6eb16b3795da54', 'NOMAN41', 'null', '2022-04-29 11:53:54', '101173392533471700830', NULL, NULL, NULL),
-(8, '2022-05-01 15:17:41', 'Shahzeb Shahzeb', 'sshahzeb762@gmail.com', NULL, '14c8868d5a74e3839759b2438caed8', 'SHAHZ85', 'null', '2022-05-01 15:17:41', '108748686512667638205', NULL, NULL, NULL),
-(9, '2022-05-06 13:24:54', '+92', 'tgr', 'rt', 'b5bf5d0b4b894f5dc9fb1204658228', '+9245rt', '', '2022-05-06 13:24:54', NULL, NULL, NULL, NULL),
-(10, '2022-05-06 16:33:49', '+92', 'g', 'gsdg', '0737c3e2dd8013fda1f20ab2306ee0', '+9212gsdg', '', '2022-05-06 16:33:49', NULL, NULL, NULL, NULL),
-(11, '2022-05-06 16:57:38', '+92', 'efr', 'ewrf', 'e8804e8fa6ed1818afa6e74fe55c74', '+9273ewrf', '', '2022-05-06 16:57:38', NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `create_time`, `name`, `email`, `phone_number`, `password`, `token`, `referal_id`, `profile_image`, `login_info`, `social_id`, `bankname`, `accounttitle`, `iban`) VALUES
+(1, '2022-05-11 17:59:49', 'Muhammad Yousuf', 'muhammad.yousuf786678@gmail.com', NULL, '123', 'fafe5c9b6ab2e2f06ab9acf2326e91', 'MUHAM46', 'https://lh3.googleusercontent.com/a-/AOh14Gg5WSVHXNszn6IcAl-I8pB1ZOUGREpcC0qEtNzL', '2022-05-11 17:59:49', '116702045659236458430', NULL, NULL, NULL),
+(2, '2022-05-11 17:37:08', '+92', '', '', NULL, 'b362888b15097d28cf6ddb4ac78fef', '+9286', '', '2022-05-11 17:37:08', NULL, NULL, NULL, NULL),
+(3, '2022-05-11 17:37:04', '+92', 'yju', 'yjuytju', NULL, '96c7a54781948e9ca93a3596c11652', '+9255ytju', '', '2022-05-11 17:37:04', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -301,27 +352,16 @@ CREATE TABLE `wallet` (
 --
 
 INSERT INTO `wallet` (`id`, `user_id`, `tranaction_type`, `time`, `amount`, `image`, `status`) VALUES
-(2, 2, 'credit', '2022-04-28 20:44:38', 220, '619803098a118da01-cd5f-4d0f-b274-3f35314d1a664207667042927807481.jpg', 'Approved'),
-(3, 2, 'credit', '2022-04-28 20:27:36', 258, '192292656509df3c2-0a38-481c-9388-75e36f6a982a7954766300398617154.jpg', 'Not Approved'),
-(4, 2, 'subtract', '2022-04-28 20:34:12', 20, '', 'Approved'),
-(5, 2, 'subtract', '2022-04-28 20:42:46', 1, '', 'Approved'),
-(6, 2, 'subtract', '2022-04-28 20:43:41', 1, '', 'Approved'),
-(7, 2, 'subtract', '2022-04-28 20:44:46', 2, '', 'Approved'),
-(8, 2, 'subtract', '2022-04-28 20:45:16', 22, '', 'Approved'),
-(9, 2, 'subtract', '2022-04-28 20:45:39', 22, '', 'Approved'),
-(10, 2, 'subtract', '2022-04-28 20:45:51', 22, '', 'Approved'),
-(11, 2, 'subtract', '2022-04-28 20:47:36', 20, '', 'Approved'),
-(12, 2, 'add', '2022-04-28 20:48:18', 22, '', 'Approved'),
-(13, 2, 'add', '2022-04-28 20:54:44', 22, '', 'Approved'),
-(14, 1, 'credit', '2022-04-28 21:00:46', 22, '527537995image_picker1216398855.jpg', 'Not Approved'),
-(15, 5, 'credit', '2022-04-29 10:15:29', 5000, '1421886697image_picker4258993000638702402.jpg', 'Approved'),
-(16, 5, 'credit', '2022-04-29 10:15:25', 5000, '1056546252image_picker1535708432875616267.jpg', 'Approved'),
-(17, 5, 'subtract', '2022-04-29 10:16:47', 10000, '', 'Approved'),
-(18, 5, 'add', '2022-04-29 10:17:08', 5000, '', 'Approved'),
-(19, 5, 'credit', '2022-04-29 12:02:44', 100000, '1124313325image_picker1399957568679254194.png', 'Approved'),
-(20, 7, 'credit', '2022-04-29 12:04:38', 5000, '1279739484image_picker7952139985779688941.jpg', 'Not Approved'),
-(21, 8, 'credit', '2022-05-01 15:19:07', 22, '1926395509cd9b7414-6ce4-4e6a-9e8c-946bc9efef116699570371784859553.jpg', 'Not Approved'),
-(22, 8, 'credit', '2022-05-07 19:10:21', 222, '1611573759image_picker9183034146588452967.jpg', 'Not Approved');
+(1, 1, 'credit', '2022-05-10 18:15:17', 5000, '253981146image_picker5667201751316520537.png', 'Approved'),
+(5, 1, 'subtract', '2022-05-10 18:22:27', 500, '', 'Approved'),
+(6, 1, 'add', '2022-05-10 18:22:55', 400, '', 'Approved'),
+(7, 1, 'add', '2022-05-10 18:26:54', 50, '', 'Approved'),
+(8, 1, 'subtract', '2022-05-10 18:27:40', 500, '', 'Approved'),
+(9, 1, 'add', '2022-05-10 18:27:57', 300, '', 'Approved'),
+(10, 1, 'subtract', '2022-05-10 18:28:26', 250, '', 'Approved'),
+(11, 1, 'add', '2022-05-10 18:28:37', 150, '', 'Approved'),
+(12, 1, 'subtract', '2022-05-10 18:29:08', 650, '', 'Approved'),
+(13, 1, 'add', '2022-05-10 18:29:18', 150, '', 'Approved');
 
 -- --------------------------------------------------------
 
@@ -360,6 +400,12 @@ INSERT INTO `youtubelinks` (`id`, `title`, `link`, `time`) VALUES
 --
 
 --
+-- Indexes for table `bank_accounts`
+--
+ALTER TABLE `bank_accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `blog`
 --
 ALTER TABLE `blog`
@@ -369,6 +415,12 @@ ALTER TABLE `blog`
 -- Indexes for table `faqs`
 --
 ALTER TABLE `faqs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `kyc_approval`
+--
+ALTER TABLE `kyc_approval`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -402,6 +454,12 @@ ALTER TABLE `profit`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `referral`
+--
+ALTER TABLE `referral`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -424,6 +482,12 @@ ALTER TABLE `youtubelinks`
 --
 
 --
+-- AUTO_INCREMENT for table `bank_accounts`
+--
+ALTER TABLE `bank_accounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `blog`
 --
 ALTER TABLE `blog`
@@ -434,6 +498,12 @@ ALTER TABLE `blog`
 --
 ALTER TABLE `faqs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `kyc_approval`
+--
+ALTER TABLE `kyc_approval`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -466,16 +536,22 @@ ALTER TABLE `profit`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `referral`
+--
+ALTER TABLE `referral`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `wallet`
 --
 ALTER TABLE `wallet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `youtubelinks`
