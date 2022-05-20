@@ -6,13 +6,14 @@ $user = new User();
 $userid = $_GET['usernum'];
 
 $response =array();
+$res =array();
 $sql2 ="SELECT `plan_mode` FROM `plans`";
 
 $result2 = mysqli_query($user->dbConnect,$sql2);
 $replan =mysqli_fetch_all($result2);
 // $pue = $re['plan_mode'][1];
 
-
+$total=0;
 for($x = 1; $x <= 4; $x++){
 
 $sql2 ="SELECT SUM(`amount`)as 'total' FROM `plan_user` WHERE `type`='purchase' and `user_id`='{$userid}' and `plan_id`= '{$x}'";
@@ -29,15 +30,13 @@ $sell = $re4['total'];
 
 $pal_ammount = $purchase -$sell;
 $r=array("planname"=>"{$replan[$x-1][0]}","planinvested"=>"$pal_ammount");
-array_push($response,$r);
-// $response = array("plan"=>$pal_ammount);
+array_push($res,$r);
 
+$total=$total+$pal_ammount;
 }
-// $response = array("plan"=>"ss");
+array_push($response,$res);
 
-
-
-        
-  
+$rs=array("Total"=>"$total");
+array_push($response,$rs);
 echo json_encode($response);
 ?>
